@@ -1,0 +1,279 @@
+{
+  "_format": "hh3-artifact-1",
+  "contractName": "ReactiveMirror",
+  "sourceName": "contracts/ReactiveMirror.sol",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_originFeed",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_destContract",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_systemContract",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "chain_id",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "_contract",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint64",
+          "name": "gas_limit",
+          "type": "uint64"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes",
+          "name": "payload",
+          "type": "bytes"
+        }
+      ],
+      "name": "Callback",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "CALLBACK_GAS_LIMIT",
+      "outputs": [
+        {
+          "internalType": "uint64",
+          "name": "",
+          "type": "uint64"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "DEST_CHAIN_ID",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "DOMAIN_SEPARATOR",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "ORIGIN_CHAIN_ID",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "REACTIVE_IGNORE",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "SYSTEM_CONTRACT",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "TOPIC_0",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "destContract",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "originFeed",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "chain_id",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_contract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "topic_0",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "topic_1",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "topic_2",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "topic_3",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint256",
+              "name": "block_number",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "op_code",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "block_hash",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tx_hash",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "log_index",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct IReactive.LogRecord",
+          "name": "log",
+          "type": "tuple"
+        }
+      ],
+      "name": "react",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x60c060405234801561000f575f80fd5b5060405161075438038061075483398101604081905261002e916101ea565b6001600160a01b0383166100895760405162461bcd60e51b815260206004820152601360248201527f496e76616c6964206f726967696e20666565640000000000000000000000000060448201526064015b60405180910390fd5b6001600160a01b0382166100df5760405162461bcd60e51b815260206004820152601560248201527f496e76616c6964206465737420636f6e747261637400000000000000000000006044820152606401610080565b6001600160a01b0380841660805282811660a0525f908216156101025781610107565b62ffffff5b6080516040516305a6aced60e41b81526201388260048201526001600160a01b0391821660248201527f0559884fd3a460db3073b7fc896cc77986f16e378210ded43186175bf646fc5f60448201527fa65f96fc951c35ead38878e0f0b7a3c744a6f5ccc1476b313353ce31712313ad606482018190526084820181905260a4820152919250821690635a6aced09060c4015f604051808303815f87803b1580156101b0575f80fd5b505af11580156101c2573d5f803e3d5ffd5b505050505050505061022a565b80516001600160a01b03811681146101e5575f80fd5b919050565b5f805f606084860312156101fc575f80fd5b610205846101cf565b9250610213602085016101cf565b9150610221604085016101cf565b90509250925092565b60805160a0516104fb6102595f395f8181610190015261035201525f81816101b701526101fb01526104fb5ff3fe608060405234801561000f575f80fd5b506004361061009b575f3560e01c806380c354331161006357806380c354331461013d5780638671b5da14610164578063bb4fe3e81461018b578063ec82d983146101b2578063fd342df7146101d9575f80fd5b80630d152c2c1461009f5780630dd85b00146100b457806333d608f1146100d15780633644e515146100f45780637573ca921461011b575b5f80fd5b6100b26100ad3660046103b4565b6101e3565b005b6100be6201388281565b6040519081526020015b60405180910390f35b6100db6207a12081565b60405167ffffffffffffffff90911681526020016100c8565b6100be7f5cb13ea24ddad28958cbe9f03e05312aa1b9bb396626409765353f4054f4a8bb81565b61012562ffffff81565b6040516001600160a01b0390911681526020016100c8565b6100be7f0559884fd3a460db3073b7fc896cc77986f16e378210ded43186175bf646fc5f81565b6100be7fa65f96fc951c35ead38878e0f0b7a3c744a6f5ccc1476b313353ce31712313ad81565b6101257f000000000000000000000000000000000000000000000000000000000000000081565b6101257f000000000000000000000000000000000000000000000000000000000000000081565b6100be62aa36a781565b80356201388214158061023757506001600160a01b037f00000000000000000000000000000000000000000000000000000000000000001661022b60408301602084016103f3565b6001600160a01b031614155b8061026657507f0559884fd3a460db3073b7fc896cc77986f16e378210ded43186175bf646fc5f816040013514155b1561026e5750565b60608101356080820135602061028760c0850185610419565b9050101561029457505050565b5f6102a260c0850185610419565b8101906102af9190610463565b6040515f602482018190527f5cb13ea24ddad28958cbe9f03e05312aa1b9bb396626409765353f4054f4a8bb604483015269ffffffffffffffffffff8516606483018190526084830187905260a4830184905260c4830184905260e48301529192506101040160408051601f198184030181529181526020820180516001600160e01b0316630ef9264b60e11b179052519091506207a120906001600160a01b037f0000000000000000000000000000000000000000000000000000000000000000169062aa36a7907f8dd725fa9d6cd150017ab9e60318d40616439424e2fade9c1c58854950917dfc906103a590869061047a565b60405180910390a45050505050565b5f602082840312156103c4575f80fd5b813567ffffffffffffffff8111156103da575f80fd5b820161018081850312156103ec575f80fd5b9392505050565b5f60208284031215610403575f80fd5b81356001600160a01b03811681146103ec575f80fd5b5f808335601e1984360301811261042e575f80fd5b83018035915067ffffffffffffffff821115610448575f80fd5b60200191503681900382131561045c575f80fd5b9250929050565b5f60208284031215610473575f80fd5b5035919050565b5f6020808352835180828501525f5b818110156104a557858101830151858201604001528201610489565b505f604082860101526040601f19601f830116850101925050509291505056fea264697066735822122063dfdba041f2a0fd8ab408d5774975297cdcf8c5d738be98e22f42c47a1a272664736f6c63430008140033",
+  "deployedBytecode": "0x608060405234801561000f575f80fd5b506004361061009b575f3560e01c806380c354331161006357806380c354331461013d5780638671b5da14610164578063bb4fe3e81461018b578063ec82d983146101b2578063fd342df7146101d9575f80fd5b80630d152c2c1461009f5780630dd85b00146100b457806333d608f1146100d15780633644e515146100f45780637573ca921461011b575b5f80fd5b6100b26100ad3660046103b4565b6101e3565b005b6100be6201388281565b6040519081526020015b60405180910390f35b6100db6207a12081565b60405167ffffffffffffffff90911681526020016100c8565b6100be7f5cb13ea24ddad28958cbe9f03e05312aa1b9bb396626409765353f4054f4a8bb81565b61012562ffffff81565b6040516001600160a01b0390911681526020016100c8565b6100be7f0559884fd3a460db3073b7fc896cc77986f16e378210ded43186175bf646fc5f81565b6100be7fa65f96fc951c35ead38878e0f0b7a3c744a6f5ccc1476b313353ce31712313ad81565b6101257f000000000000000000000000000000000000000000000000000000000000000081565b6101257f000000000000000000000000000000000000000000000000000000000000000081565b6100be62aa36a781565b80356201388214158061023757506001600160a01b037f00000000000000000000000000000000000000000000000000000000000000001661022b60408301602084016103f3565b6001600160a01b031614155b8061026657507f0559884fd3a460db3073b7fc896cc77986f16e378210ded43186175bf646fc5f816040013514155b1561026e5750565b60608101356080820135602061028760c0850185610419565b9050101561029457505050565b5f6102a260c0850185610419565b8101906102af9190610463565b6040515f602482018190527f5cb13ea24ddad28958cbe9f03e05312aa1b9bb396626409765353f4054f4a8bb604483015269ffffffffffffffffffff8516606483018190526084830187905260a4830184905260c4830184905260e48301529192506101040160408051601f198184030181529181526020820180516001600160e01b0316630ef9264b60e11b179052519091506207a120906001600160a01b037f0000000000000000000000000000000000000000000000000000000000000000169062aa36a7907f8dd725fa9d6cd150017ab9e60318d40616439424e2fade9c1c58854950917dfc906103a590869061047a565b60405180910390a45050505050565b5f602082840312156103c4575f80fd5b813567ffffffffffffffff8111156103da575f80fd5b820161018081850312156103ec575f80fd5b9392505050565b5f60208284031215610403575f80fd5b81356001600160a01b03811681146103ec575f80fd5b5f808335601e1984360301811261042e575f80fd5b83018035915067ffffffffffffffff821115610448575f80fd5b60200191503681900382131561045c575f80fd5b9250929050565b5f60208284031215610473575f80fd5b5035919050565b5f6020808352835180828501525f5b818110156104a557858101830151858201604001528201610489565b505f604082860101526040601f19601f830116850101925050509291505056fea264697066735822122063dfdba041f2a0fd8ab408d5774975297cdcf8c5d738be98e22f42c47a1a272664736f6c63430008140033",
+  "linkReferences": {},
+  "deployedLinkReferences": {},
+  "immutableReferences": {
+    "98": [
+      {
+        "length": 32,
+        "start": 439
+      },
+      {
+        "length": 32,
+        "start": 507
+      }
+    ],
+    "103": [
+      {
+        "length": 32,
+        "start": 400
+      },
+      {
+        "length": 32,
+        "start": 850
+      }
+    ]
+  },
+  "inputSourceName": "project/contracts/ReactiveMirror.sol",
+  "buildInfoId": "solc-0_8_20-cec9993d2e082667ef7a2f62b48da7469dc1f38a"
+}

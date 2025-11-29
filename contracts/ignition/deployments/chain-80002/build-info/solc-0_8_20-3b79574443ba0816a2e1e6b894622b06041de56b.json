@@ -1,0 +1,44 @@
+{
+  "_format": "hh3-sol-build-info-1",
+  "id": "solc-0_8_20-3b79574443ba0816a2e1e6b894622b06041de56b",
+  "solcVersion": "0.8.20",
+  "solcLongVersion": "0.8.20+commit.a1b79de6",
+  "userSourceNameMap": {
+    "contracts/MockFeed.sol": "project/contracts/MockFeed.sol"
+  },
+  "input": {
+    "language": "Solidity",
+    "settings": {
+      "evmVersion": "shanghai",
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "outputSelection": {
+        "*": {
+          "": [
+            "ast"
+          ],
+          "*": [
+            "abi",
+            "evm.bytecode",
+            "evm.deployedBytecode",
+            "evm.methodIdentifiers",
+            "metadata"
+          ]
+        }
+      },
+      "remappings": [
+        "project/:@chainlink/contracts/=npm/@chainlink/contracts@1.5.0/"
+      ]
+    },
+    "sources": {
+      "npm/@chainlink/contracts@1.5.0/src/v0.8/shared/interfaces/AggregatorV3Interface.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\n// solhint-disable-next-line interface-starts-with-i\ninterface AggregatorV3Interface {\n  function decimals() external view returns (uint8);\n\n  function description() external view returns (string memory);\n\n  function version() external view returns (uint256);\n\n  function getRoundData(\n    uint80 _roundId\n  ) external view returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound);\n\n  function latestRoundData()\n    external\n    view\n    returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound);\n}\n"
+      },
+      "project/contracts/MockFeed.sol": {
+        "content": "// SPDX-License-Identifier: MIT\r\n\r\npragma solidity ^0.8.20;\r\n\r\nimport \"@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol\";\r\n\r\ncontract MockFeed is AggregatorV3Interface {\r\n    event AnswerUpdated(int256 current, uint256 roundId, uint256 updatedAt);\r\n\r\n    uint8 public constant override decimals = 8;\r\n    string public constant override description = \"Mock BTC/USD\";\r\n    uint256 public constant override version = 1;\r\n\r\n    uint80 public roundId;\r\n    int256 public answer;\r\n    uint256 public startedAt;\r\n    uint256 public updatedAt;\r\n    uint80 public answeredInRound;\r\n\r\n    constructor(int256 _initialPrice) {\r\n        roundId = 1;\r\n        answer = _initialPrice;\r\n        startedAt = block.timestamp;\r\n        updatedAt = block.timestamp;\r\n        answeredInRound = 1;\r\n    }\r\n\r\n    function updatePrice(int256 _newPrice) external {\r\n        roundId++;\r\n        answer = _newPrice;\r\n        startedAt = updatedAt;\r\n        updatedAt = block.timestamp;\r\n        answeredInRound = roundId;\r\n        emit AnswerUpdated(answer, roundId, updatedAt);\r\n    }\r\n\r\n    function getRoundData(uint80 _roundId) external view override returns (uint80, int256, uint256, uint256, uint80) {\r\n        require(_roundId == roundId, \"Round not found\");\r\n        return (roundId, answer, startedAt, updatedAt, answeredInRound);\r\n    }\r\n\r\n    function latestRoundData() external view override returns (uint80, int256, uint256, uint256, uint80) {\r\n        return (roundId, answer, startedAt, updatedAt, answeredInRound);\r\n    }\r\n}"
+      }
+    }
+  }
+}
