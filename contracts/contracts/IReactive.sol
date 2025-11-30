@@ -2,10 +2,19 @@
 pragma solidity >=0.8.20;
 
 /**
+ * @title IPayer
+ * @notice Interface for contracts that need to pay Reactive Network callback fees
+ */
+interface IPayer {
+    function pay() external payable;
+}
+
+/**
  * @title IReactive
  * @notice Interface for Reactive Network contracts that react to cross-chain events
+ * @dev According to Reactive Network docs: "interface IReactive is IPayer"
  */
-interface IReactive {
+interface IReactive is IPayer {
     /**
      * @notice Log record structure representing an event from a source chain
      * @dev Must match the Reactive Network specification exactly
@@ -59,11 +68,7 @@ interface ISystemContract {
     ) external;
 }
 
-/**
- * @title IPayer
- * @notice Interface for contracts that need to pay Reactive Network callback fees
- */
-interface IPayer {
-    function pay() external payable;
-}
+
+
+
 

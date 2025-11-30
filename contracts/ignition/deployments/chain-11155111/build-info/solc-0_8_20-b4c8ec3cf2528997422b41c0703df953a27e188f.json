@@ -1,0 +1,47 @@
+{
+  "_format": "hh3-sol-build-info-1",
+  "id": "solc-0_8_20-b4c8ec3cf2528997422b41c0703df953a27e188f",
+  "solcVersion": "0.8.20",
+  "solcLongVersion": "0.8.20+commit.a1b79de6",
+  "userSourceNameMap": {
+    "contracts/FeedProxy.sol": "project/contracts/FeedProxy.sol"
+  },
+  "input": {
+    "language": "Solidity",
+    "settings": {
+      "evmVersion": "shanghai",
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "outputSelection": {
+        "*": {
+          "": [
+            "ast"
+          ],
+          "*": [
+            "abi",
+            "evm.bytecode",
+            "evm.deployedBytecode",
+            "evm.methodIdentifiers",
+            "metadata"
+          ]
+        }
+      },
+      "remappings": [
+        "project/:@chainlink/contracts/=npm/@chainlink/contracts@1.5.0/"
+      ]
+    },
+    "sources": {
+      "npm/@chainlink/contracts@1.5.0/src/v0.8/shared/interfaces/AggregatorV3Interface.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\n// solhint-disable-next-line interface-starts-with-i\ninterface AggregatorV3Interface {\n  function decimals() external view returns (uint8);\n\n  function description() external view returns (string memory);\n\n  function version() external view returns (uint256);\n\n  function getRoundData(\n    uint80 _roundId\n  ) external view returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound);\n\n  function latestRoundData()\n    external\n    view\n    returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound);\n}\n"
+      },
+      "project/contracts/FeedProxy.sol": {
+        "content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.20;\r\n\r\nimport \"@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol\";\r\nimport \"./IReactive.sol\";\r\n\r\ncontract FeedProxy is AggregatorV3Interface, IPayer {\r\n    // OFFICIAL SEPOLIA CALLBACK PROXY\r\n    address public constant CALLBACK_PROXY = 0xc9f36411C9897e7F959D99ffca2a0Ba7ee0D7bDA;\r\n\r\n    bytes32 public constant DOMAIN_SEPARATOR = keccak256(\"REACTIVE_ORACLE_V1\");\r\n    address public immutable reactiveVmId;\r\n\r\n    event PriceUpdated(uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound);\r\n\r\n    struct RoundData {\r\n        uint80 roundId;\r\n        int256 answer;\r\n        uint256 startedAt;\r\n        uint256 updatedAt;\r\n        uint80 answeredInRound;\r\n    }\r\n\r\n    RoundData public latestRound;\r\n    uint8 public constant override decimals = 8;\r\n    string public constant override description = \"BTC/USD (Reactive Mirror)\";\r\n    uint256 public constant override version = 1;\r\n\r\n    modifier onlyReactive() {\r\n        require(msg.sender == CALLBACK_PROXY, \"FeedProxy: not Reactive proxy\");\r\n        _;\r\n    }\r\n\r\n    constructor(address _reactiveVmId) {\r\n        require(_reactiveVmId != address(0), \"FeedProxy: invalid RVM ID\");\r\n        reactiveVmId = _reactiveVmId;\r\n        latestRound.startedAt = block.timestamp;\r\n    }\r\n\r\n    function updatePrice(\r\n        address sender,\r\n        bytes32 _domainSeparator,\r\n        uint80 _roundId,\r\n        int256 _answer,\r\n        uint256 _startedAt,\r\n        uint256 _updatedAt,\r\n        uint80 _answeredInRound\r\n    ) external onlyReactive {\r\n        require(sender == reactiveVmId, \"FeedProxy: unauthorized sender\");\r\n        require(_domainSeparator == DOMAIN_SEPARATOR, \"FeedProxy: invalid domain separator\");\r\n        require(_updatedAt > latestRound.updatedAt, \"FeedProxy: stale price\");\r\n\r\n        latestRound = RoundData({\r\n            roundId: _roundId,\r\n            answer: _answer,\r\n            startedAt: _startedAt,\r\n            updatedAt: _updatedAt,\r\n            answeredInRound: _answeredInRound\r\n        });\r\n\r\n        emit PriceUpdated(_roundId, _answer, _startedAt, _updatedAt, _answeredInRound);\r\n    }\r\n\r\n    // Standard Getters\r\n    function getRoundData(uint80 _roundId) external view override returns (uint80, int256, uint256, uint256, uint80) {\r\n        require(_roundId == latestRound.roundId, \"FeedProxy: round not found\");\r\n        return (latestRound.roundId, latestRound.answer, latestRound.startedAt, latestRound.updatedAt, latestRound.answeredInRound);\r\n    }\r\n\r\n    function latestRoundData() external view override returns (uint80, int256, uint256, uint256, uint80) {\r\n        return (latestRound.roundId, latestRound.answer, latestRound.startedAt, latestRound.updatedAt, latestRound.answeredInRound);\r\n    }\r\n\r\n    function pay() external payable override {\r\n        require(msg.sender == CALLBACK_PROXY, \"FeedProxy: not Reactive proxy\");\r\n    }\r\n\r\n    receive() external payable {}\r\n}\r\n"
+      },
+      "project/contracts/IReactive.sol": {
+        "content": "// SPDX-License-Identifier: MIT\r\npragma solidity >=0.8.20;\r\n\r\n/**\r\n * @title IReactive\r\n * @notice Interface for Reactive Network contracts that react to cross-chain events\r\n */\r\ninterface IReactive {\r\n    /**\r\n     * @notice Log record structure representing an event from a source chain\r\n     * @dev Must match the Reactive Network specification exactly\r\n     */\r\n    struct LogRecord {\r\n        uint256 chain_id;\r\n        address _contract;\r\n        uint256 topic_0;\r\n        uint256 topic_1;\r\n        uint256 topic_2;\r\n        uint256 topic_3;\r\n        bytes data;\r\n        uint256 block_number;\r\n        uint256 op_code;\r\n        uint256 block_hash;\r\n        uint256 tx_hash;\r\n        uint256 log_index;\r\n    }\r\n\r\n    event Callback(\r\n        uint256 indexed chain_id,\r\n        address indexed _contract,\r\n        uint64 indexed gas_limit,\r\n        bytes payload\r\n    );\r\n\r\n    function react(LogRecord calldata log) external;\r\n}\r\n\r\n/**\r\n * @title ISystemContract\r\n * @notice Interface for the Reactive Network System Contract\r\n */\r\ninterface ISystemContract {\r\n    function subscribe(\r\n        uint256 chain_id,\r\n        address contract_address,\r\n        uint256 topic_0,\r\n        uint256 topic_1,\r\n        uint256 topic_2,\r\n        uint256 topic_3\r\n    ) external;\r\n\r\n    function unsubscribe(\r\n        uint256 chain_id,\r\n        address contract_address,\r\n        uint256 topic_0,\r\n        uint256 topic_1,\r\n        uint256 topic_2,\r\n        uint256 topic_3\r\n    ) external;\r\n}\r\n\r\n/**\r\n * @title IPayer\r\n * @notice Interface for contracts that need to pay Reactive Network callback fees\r\n */\r\ninterface IPayer {\r\n    function pay() external payable;\r\n}\r\n\r\n"
+      }
+    }
+  }
+}
