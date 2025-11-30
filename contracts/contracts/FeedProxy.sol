@@ -5,7 +5,6 @@ import "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.so
 import "./IReactive.sol";
 
 contract FeedProxy is AggregatorV3Interface, IPayer {
-    // OFFICIAL SEPOLIA CALLBACK PROXY
     address public constant CALLBACK_PROXY = 0xc9f36411C9897e7F959D99ffca2a0Ba7ee0D7bDA;
 
     bytes32 public constant DOMAIN_SEPARATOR = keccak256("REACTIVE_ORACLE_V1");
@@ -61,7 +60,6 @@ contract FeedProxy is AggregatorV3Interface, IPayer {
         emit PriceUpdated(_roundId, _answer, _startedAt, _updatedAt, _answeredInRound);
     }
 
-    // Standard Getters
     function getRoundData(uint80 _roundId) external view override returns (uint80, int256, uint256, uint256, uint80) {
         require(_roundId == latestRound.roundId, "FeedProxy: round not found");
         return (latestRound.roundId, latestRound.answer, latestRound.startedAt, latestRound.updatedAt, latestRound.answeredInRound);
@@ -77,10 +75,5 @@ contract FeedProxy is AggregatorV3Interface, IPayer {
 
     receive() external payable {}
 }
-
-
-
-
-
 
 

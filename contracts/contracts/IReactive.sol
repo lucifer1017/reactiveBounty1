@@ -67,8 +67,3 @@ interface ISystemContract {
         uint256 topic_3
     ) external;
 }
-
-
-
-
-
